@@ -1,15 +1,15 @@
 import React from "react";
 import Cards from "./Cards.js";
 import ReactDOM from "react-dom";
-require('dotenv').config();
+import api_key from "./.gitignore";
+let env = require('dotenv').config();
 
-//process.env.API-KEY;
 class movies extends React.Component {
   getMovies(clickedMenu) {
     console.log(clickedMenu);
     let request = new XMLHttpRequest();
     let url= "https://api.themoviedb.org/3/movie/";
-    let api = "4c2d7f5a8af2d48377e9431af1a091f2";
+    let api = env;
     //let data = "";
     if (clickedMenu) {
       
@@ -27,8 +27,8 @@ class movies extends React.Component {
   } else {
        request.open(
          "GET",
-        "https://api.themoviedb.org/3/movie/now_playing?api_key=4c2d7f5a8af2d48377e9431af1a091f2&language=en-US&page=1",
-        false
+         url+ "now_playing" + "?api_key=" + api+ "&language=en-US&page=1",
+         false
        );
        request.send(null);
 
@@ -36,13 +36,11 @@ class movies extends React.Component {
          let data = JSON.parse(request.responseText).results;
          return data;
        }
-      }
-    
+      }   
      return {};
   }
 
   buildCards(newMovies) {
-    //console.log(data);
     return newMovies.map((result) => {
       return (
         <Cards
